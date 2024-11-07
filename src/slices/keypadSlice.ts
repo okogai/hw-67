@@ -25,11 +25,7 @@ export const KeypadAccessSlice = createSlice({
       state.input = state.input.slice(0, -1);
     },
     submitInput: (state) => {
-      if (state.input === PIN_CODE) {
-        state.isAccessGranted = true;
-      } else {
-        state.isAccessGranted = false;
-      }
+      state.isAccessGranted = state.input === PIN_CODE;
     },
     resetInput: (state) => {
       state.input = "";

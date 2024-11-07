@@ -107,7 +107,7 @@ const KeypadAccess = () => {
             onClick={handleDelete}
             color="primary"
             fullWidth
-            disabled={input.length === 0}
+            disabled={input.length === 0 || isAccessGranted !== null}
           >
             {"<"}
           </Button>
@@ -117,7 +117,7 @@ const KeypadAccess = () => {
             onClick={handleSubmit}
             color="primary"
             fullWidth
-            disabled={input.length < 4}
+            disabled={input.length < 4 || isAccessGranted !== null}
           >
             E
           </Button>

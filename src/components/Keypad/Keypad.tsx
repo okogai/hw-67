@@ -1,35 +1,43 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../app/store.ts";
+import React from "react";
 import { Box, Button, Paper, Typography } from "@mui/material";
-import {
-  addInput,
-  removeInput,
-  resetInput,
-  submitInput,
-} from "../../slices/calculatorSlice.ts";
 
-const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "."];
-const operations = ["+", "-", "*", "/"];
+interface KeypadProps {
+  title: string;
+  input: string;
+  result?: string;
+  isAccessGranted?: boolean | null;
+  keys: string[];
+  operations?: string[];
+  onButtonClick: (value: string) => void;
+  onDelete: () => void;
+  onSubmit: () => void;
+  onReset?: () => void;
+  inputLengthLimit?: number;
+  submitDisabledLength?: number;
+  displayColor?: string;
+}
 
-const Calculator = () => {
-  const dispatch = useDispatch();
-  const { input, result } = useSelector((state: RootState) => state.calculator);
-
-  const handleClick = (value: string) => {
-    dispatch(addInput(value));
-  };
-
-  const handleDelete = () => {
-    dispatch(removeInput());
-  };
-
-  const handleReset = () => {
-    dispatch(resetInput());
-  };
-
-  const handleSubmit = () => {
-    dispatch(submitInput());
-  };
+const Keypad: React.FC<KeypadProps> = ({
+  title,
+  input,
+  result,
+  isAccessGranted,
+  keys,
+  operations = [],
+  onButtonClick,
+  onDelete,
+  onSubmit,
+  onReset,
+  submitDisabledLength,
+  displayColor = "#fff",
+  inputLengthLimit,
+}) => {
+  const displayValue =
+    result !== null
+      ? result
+      : isAccessGranted === false
+        ? "*".repeat(input.length)
+        : input;
 
   return (
     <Box
@@ -39,7 +47,7 @@ const Calculator = () => {
       flexDirection="column"
     >
       <Typography variant="h2" marginBottom="40px">
-        Calculator
+        {title}
       </Typography>
       <Paper
         style={{
@@ -63,7 +71,7 @@ const Calculator = () => {
             fontSize: "32px",
             overflowY: "auto",
             width: "100%",
-            backgroundColor: "#fff",
+            backgroundColor: displayColor,
           }}
         >
           <Typography
@@ -77,7 +85,7 @@ const Calculator = () => {
               textAlign: "center",
             }}
           >
-            {result !== null ? result : input}
+            {displayValue}
           </Typography>
         </Box>
 
@@ -90,27 +98,29 @@ const Calculator = () => {
           <Box
             display="grid"
             gridTemplateColumns="repeat(3, 1fr)"
-            gap={"4px"}
+            gap="4px"
             width="70%"
           >
             {keys.map((key) => (
               <Button
                 key={key}
                 variant="contained"
-                onClick={() => handleClick(key)}
-                style={{
-                  height: "50px",
-                }}
+                onClick={() => onButtonClick(key)}
+                style={{ height: "50px" }}
+                disabled={
+                  inputLengthLimit ? input.length >= inputLengthLimit : false
+                }
               >
                 {key}
               </Button>
             ))}
             <Button
               variant="contained"
-              onClick={handleDelete}
+              onClick={onDelete}
               color="primary"
               fullWidth
               style={{ marginRight: "10px", height: "50px" }}
+              disabled={input.length === 0}
             >
               {"<"}
             </Button>
@@ -119,14 +129,14 @@ const Calculator = () => {
           <Box
             display="grid"
             gridTemplateRows="repeat(4, 1fr)"
-            gap={"4px"}
+            gap="4px"
             width="25%"
           >
-            {operations.map((operation) => (
+            {operations?.map((operation) => (
               <Button
                 key={operation}
                 variant="contained"
-                onClick={() => handleClick(operation)}
+                onClick={() => onButtonClick(operation)}
               >
                 {operation}
               </Button>
@@ -135,21 +145,26 @@ const Calculator = () => {
         </Box>
 
         <Box display="flex" justifyContent="space-between">
-          <Button
-            variant="contained"
-            onClick={handleReset}
-            color="secondary"
-            fullWidth
-            style={{ marginRight: "10px", height: "50px" }}
-          >
-            C
-          </Button>
+          {onReset && (
+            <Button
+              variant="contained"
+              onClick={onReset}
+              color="secondary"
+              fullWidth
+              style={{ marginRight: "10px", height: "50px" }}
+            >
+              C
+            </Button>
+          )}
 
           <Button
             variant="contained"
-            onClick={handleSubmit}
+            onClick={onSubmit}
             color="secondary"
             fullWidth
+            disabled={
+              submitDisabledLength ? input.length < submitDisabledLength : false
+            }
           >
             =
           </Button>
@@ -159,4 +174,4 @@ const Calculator = () => {
   );
 };
 
-export default Calculator;
+export default Keypad;

@@ -1,19 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-const PIN_CODE = '1156';
+const PIN_CODE = "1156";
 
-interface KeypadAccessState  {
+interface KeypadAccessState {
   input: string;
   isAccessGranted: boolean | null;
 }
 
-const initialState:KeypadAccessState = {
-  input: '',
+const initialState: KeypadAccessState = {
+  input: "",
   isAccessGranted: null,
-}
+};
 
 export const KeypadAccessSlice = createSlice({
-  name: 'keypad',
+  name: "keypad",
   initialState,
   reducers: {
     addInput: (state, action) => {
@@ -30,10 +30,15 @@ export const KeypadAccessSlice = createSlice({
       } else {
         state.isAccessGranted = false;
       }
-    }
-  }
+    },
+    resetInput: (state) => {
+      state.input = "";
+      state.isAccessGranted = null;
+    },
+  },
 });
 
 export const KeypadAccessReducer = KeypadAccessSlice.reducer;
 
-export const { addInput, removeInput, submitInput} = KeypadAccessSlice.actions;
+export const { addInput, removeInput, submitInput, resetInput } =
+  KeypadAccessSlice.actions;

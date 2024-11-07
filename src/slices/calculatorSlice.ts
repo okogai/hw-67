@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CalculatorState {
   input: string;
@@ -6,12 +6,12 @@ interface CalculatorState {
 }
 
 const initialState: CalculatorState = {
-  input: '',
+  input: "",
   result: null,
 };
 
 export const CalculatorSlice = createSlice({
-  name: 'calculator',
+  name: "calculator",
   initialState,
   reducers: {
     addInput: (state, action: PayloadAction<string>) => {
@@ -22,19 +22,19 @@ export const CalculatorSlice = createSlice({
       state.result = null;
     },
     resetInput: (state) => {
-      state.input = '';
+      state.input = "";
       state.result = null;
     },
     submitInput: (state) => {
       try {
         const result = eval(state.input);
         if (isNaN(result)) {
-          state.result = 'Invalid input';
+          state.result = "Invalid input";
         }
         state.result = String(result);
       } catch (error) {
-        console.error('Error evaluating expression:', error);
-        state.result = 'Error';
+        console.error("Error evaluating expression:", error);
+        state.result = "Error";
       }
     },
   },
@@ -42,4 +42,5 @@ export const CalculatorSlice = createSlice({
 
 export const CalculatorReducer = CalculatorSlice.reducer;
 
-export const { addInput, removeInput, resetInput, submitInput } = CalculatorSlice.actions;
+export const { addInput, removeInput, resetInput, submitInput } =
+  CalculatorSlice.actions;

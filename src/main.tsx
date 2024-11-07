@@ -4,11 +4,11 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./app/store.ts";
-import { CssBaseline } from '@mui/material';
+import { CssBaseline } from "@mui/material";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <CssBaseline/>
+    <CssBaseline />
     <Provider store={store}>
       <BrowserRouter>
         <App />

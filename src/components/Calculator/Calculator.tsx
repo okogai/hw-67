@@ -13,7 +13,7 @@ const operations = ["+", "-", "*", "/"];
 
 const Calculator = () => {
   const dispatch = useDispatch();
-  const { input, result } = useSelector((state: RootState) => state.calculator);
+  const { input } = useSelector((state: RootState) => state.calculator);
 
   const handleClick = (value: string) => {
       if (operations.includes(value) && operations.includes(input.slice(-1))) {
@@ -76,13 +76,13 @@ const Calculator = () => {
             style={{
               fontSize: "32px",
               fontWeight: 400,
-              color: result === "Error" ? "red" : "black",
+              color: input === "Error" ? "red" : "black",
               wordWrap: "break-word",
               maxWidth: "90%",
               textAlign: "center",
             }}
           >
-            {result !== null ? result : input}
+            {input}
           </Typography>
         </Box>
 

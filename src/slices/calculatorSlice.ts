@@ -2,12 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface CalculatorState {
   input: string;
-  result: string | null;
 }
 
 const initialState: CalculatorState = {
-  input: '',
-  result: null,
+  input: ''
 };
 
 export const CalculatorSlice = createSlice({
@@ -19,23 +17,21 @@ export const CalculatorSlice = createSlice({
     },
     removeInput: (state) => {
       state.input = state.input.slice(0, -1);
-      state.result = null;
     },
     resetInput: (state) => {
       state.input = '';
-      state.result = null;
     },
     submitInput: (state) => {
       try {
         const result = eval(state.input);
         if (isNaN(result)) {
-          state.result = 'Invalid input';
+          state.input = 'Invalid input';
         } else {
-          state.result = String(result);
+          state.input = String(result);
         }
       } catch (error) {
         console.error('Error evaluating expression:', error);
-        state.result = 'Error';
+        state.input = 'Error';
       }
     },
   },

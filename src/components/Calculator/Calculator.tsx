@@ -16,7 +16,12 @@ const Calculator = () => {
   const { input, result } = useSelector((state: RootState) => state.calculator);
 
   const handleClick = (value: string) => {
-    dispatch(addInput(value));
+      if (operations.includes(value) && operations.includes(input.slice(-1))) {
+          dispatch(removeInput());
+          dispatch(addInput(value));
+      } else {
+          dispatch(addInput(value));
+      }
   };
 
   const handleDelete = () => {
